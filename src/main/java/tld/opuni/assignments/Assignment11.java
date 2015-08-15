@@ -80,6 +80,14 @@ class Assignment11 extends Assignment {
         protected String prompt;
         protected Pattern re;
         protected Matcher mtc;
+
+        public ReadState(final States states,
+                         final String prompt,
+                         final String pattern) {
+            this.states = states;
+            this.prompt = prompt;
+            this.re = Pattern.compile(pattern);
+        }
         
         @Override public void next() {
             System.out.println(prompt);
@@ -118,10 +126,9 @@ class Assignment11 extends Assignment {
     private class InputState extends ReadState {
 
         public InputState(States states) {
-            this.states = states;
-            this.prompt = "Please enter a number followed by the unit (m, cm, ', \"):";
-            this.re = Pattern.compile(
-                "(-?(?:\\d*\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?)\\s*(m|cm|'|\")");
+            super(states,
+                  "Please enter a number followed by the unit (m, cm, ', \"):",
+                  "(-?(?:\\d*\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?)\\s*(m|cm|'|\")");
         }
         
         @Override public void tryNext() {
@@ -133,9 +140,8 @@ class Assignment11 extends Assignment {
     private class ConvertState extends ReadState {
 
         public ConvertState(States states) {
-            this.states = states;
-            this.prompt = "Select unit to convert to (m, cm, ', \"):";
-            this.re = Pattern.compile("m|cm|'|\"");
+            super(states, "Select unit to convert to (m, cm, ', \"):",
+                  "m|cm|'|\"");
         }
         
         @Override public void tryNext() {
