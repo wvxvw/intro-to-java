@@ -19,9 +19,9 @@ class Assignment11 extends Assignment {
 
         public double value;
 
-        public void init(double unit) { value = unit; }
+        public void init(final double unit) { value = unit; }
         
-        public void init(Unit unit) {
+        public void init(final Unit unit) {
             value = (unit.value * unit.getCoefficient()) / getCoefficient();
         }
 
@@ -31,7 +31,7 @@ class Assignment11 extends Assignment {
         
         protected double getThreshold() { return 100d; }
         
-        protected double round(double value) {
+        protected double round(final double value) {
             return Math.round(value * getThreshold()) / (getThreshold() * 10d);
         }
 
@@ -100,7 +100,7 @@ class Assignment11 extends Assignment {
             else states.current = states.error;
         }
 
-        protected void readUnit(String str, State change) {
+        protected void readUnit(final String str, final State change) {
             try {
                 Class cls = states.handlers.get(str);
                 Constructor ctr = cls.getDeclaredConstructors()[0];
@@ -125,7 +125,7 @@ class Assignment11 extends Assignment {
 
     private class InputState extends ReadState {
 
-        public InputState(States states) {
+        public InputState(final States states) {
             super(states,
                   "Please enter a number followed by the unit (m, cm, ', \"):",
                   "(-?(?:\\d*\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?)\\s*(m|cm|'|\")");
@@ -139,7 +139,7 @@ class Assignment11 extends Assignment {
 
     private class ConvertState extends ReadState {
 
-        public ConvertState(States states) {
+        public ConvertState(final States states) {
             super(states, "Select unit to convert to (m, cm, ', \"):",
                   "m|cm|'|\"");
         }
@@ -156,7 +156,7 @@ class Assignment11 extends Assignment {
 
         private App app;
         
-        public ErrorState(States states, final App app) {
+        public ErrorState(final States states, final App app) {
             this.states = states;
             this.app = app;
         }
@@ -172,7 +172,7 @@ class Assignment11 extends Assignment {
         
         public Unit unit;
         
-        public HashMap<String, Class> handlers;
+        public final HashMap<String, Class> handlers;
 
         public State backtrack;
 
@@ -184,7 +184,7 @@ class Assignment11 extends Assignment {
 
         public State error;
 
-        public Scanner scanner;
+        public final Scanner scanner;
         
         public States() {
             handlers = new HashMap<String, Class>();
@@ -196,7 +196,7 @@ class Assignment11 extends Assignment {
         }
     }
     
-    @Override public void interact(App app) {
+    @Override public void interact(final App app) {
         logger.debug("interacting");
         States states = new States();
         System.out.println("Welcome to unit conversion program!");
