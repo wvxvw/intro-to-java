@@ -6,17 +6,41 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 class Assignment11 extends Assignment {
 
-    static final Logger logger = LoggerFactory.getLogger(Assignment11.class);
+    private static final Logger logger = LoggerFactory.getLogger(Assignment11.class);
     
     private abstract class Unit {
 
         public double value;
+
+        protected double[] coefficients = { 1d, 100d, 2.54d, 12d * 2.54d };
+
+        /**
+         * As is often the case with retarded languages written by convicted retards,
+         * one has to redo the basic features of the language from scratch [sic].
+         */
+        protected Class[] dispatchers = {
+            Centimeter.class,
+            Meter.class,
+            Inch.class,
+            Foot.class
+        };
+
+        public void init(double unit) { value = unit; }
+        
+        public void init(Unit unit) {
+            double cm = unit.value * coefficients[
+                ArrayUtils.indexOf(dispatchers, unit.getClass())];
+            value = cm / coefficients[ArrayUtils.indexOf(dispatchers, getClass())];
+        }
 
         protected abstract String getUnits();
         
@@ -33,60 +57,20 @@ class Assignment11 extends Assignment {
 
     private class Centimeter extends Unit {
 
-        public Centimeter() { }
-
-        public Centimeter(double value) { this.value = value; }
-        
-        public Centimeter(Centimeter unit) { value = unit.value; }
-
-        public Centimeter(Meter unit) { value = unit.value * 100d; }
-
-        public Centimeter(Inch unit) { value = unit.value * 2.54d; }
-
-        public Centimeter(Foot unit) { value = new Inch(unit).value * 12d; }
-
-        public Centimeter(Unit unit) {
-            throw new RuntimeException("Unkown unit: " + unit);
-        }
-
         @Override protected String getUnits() { return "cm"; }
     }
 
     private class Meter extends Unit {
-
-        public Meter() { }
-
-        public Meter(double value) { this.value = value; }
-        
-        public Meter(Centimeter unit) { value = unit.value / 100d; }
-
-        public Meter(Unit unit) { this(new Centimeter(unit)); }
 
         @Override protected String getUnits() { return "m"; }
     }
 
     private class Inch extends Unit {
 
-        public Inch() { }
-
-        public Inch(double value) { this.value = value; }
-        
-        public Inch(Centimeter unit) { value = unit.value / 2.54d; }
-
-        public Inch(Unit unit) { this(new Centimeter(unit)); }
-
         @Override protected String getUnits() { return "\""; }
     }
 
     private class Foot extends Unit {
-
-        public Foot() { }
-
-        public Foot(double value) { this.value = value; }
-        
-        public Foot(Centimeter unit) { value = new Inch(unit).value / 12d; }
-
-        public Foot(Unit unit) { this(new Centimeter(unit)); }
 
         @Override protected String getUnits() { return "'"; }
     }
@@ -98,63 +82,74 @@ class Assignment11 extends Assignment {
         public abstract void next();
     }
 
-    private class InputState extends State {
-
-        private Pattern re =
-            Pattern.compile("(-?(?:\\d*\\.\\d+|\\d+)(:?[eE][+-]?\\d+))\\s+(m|cm|'|\")");
+    private abstract class ReadState extends State {
         
-        public InputState(States states) { this.states = states; }
+        protected String prompt;
+        protected Pattern re;
+        protected Matcher mtc;
         
         @Override public void next() {
-            Matcher mtc = re.matcher(states.scanner.next());
-        
-            System.out.println("Please enter a number followed by the unit (m, cm, ', \"):");
+            System.out.println(prompt);
+
+            String scanned = states.scanner.next();
+            logger.debug("Reading: " + scanned + " re: " + re + " this: " + this);
+            mtc = re.matcher(scanned);
             states.backtrack = this;
-            
-            if (mtc.matches()) {
-                try {
-                    states.unit = (Unit)(states.handlers
-                                         .get(mtc.group(2)).newInstance());
-                    states.unit.value = Double.parseDouble(mtc.group(1));
-                    states.current = states.conversion;
-                } catch (InstantiationException | IllegalAccessException exp) {
-                    logger.debug("Instantiation failed: " + mtc.group(2) +
-                                 "(This shouldn't happen.)");
-                }
-            } else {
-                states.current = states.error;
+            if (mtc.matches()) tryNext();
+            else states.current = states.error;
+        }
+
+        protected void readUnit(String str, State change) {
+            try {
+                Class cls = states.handlers.get(str);
+                Constructor ctr = cls.getDeclaredConstructors()[0];
+                ctr.setAccessible(true);
+                logger.debug("cls: " + ctr);
+                states.unit = (Unit)(ctr.newInstance(Assignment11.this));
+                states.current = change;
+                logger.debug("state switched: " + states.current);
+            } catch (InstantiationException    |
+                     InvocationTargetException |
+                     IllegalArgumentException  |
+                     IllegalAccessException exp) {
+                logger.debug("Instantiation failed: " + str +
+                             " (This shouldn't happen.) " +
+                             states.handlers.get(str).getDeclaredConstructors() +
+                             " error: " + exp);
             }
+        }
+
+        public abstract void tryNext();
+    }
+
+    private class InputState extends ReadState {
+
+        public InputState(States states) {
+            this.states = states;
+            this.prompt = "Please enter a number followed by the unit (m, cm, ', \"):";
+            this.re = Pattern.compile(
+                "(-?(?:\\d*\\.\\d+|\\d+)(?:[eE][+-]?\\d+)?)\\s*(m|cm|'|\")");
+        }
+        
+        @Override public void tryNext() {
+            readUnit(mtc.group(2), states.conversion);
+            states.unit.init(Double.parseDouble(mtc.group(1)));
         }
     }
 
-    private class ConvertState extends State {
+    private class ConvertState extends ReadState {
 
-        private Pattern re = Pattern.compile("m|cm|'|\"");
+        public ConvertState(States states) {
+            this.states = states;
+            this.prompt = "Select unit to convert to (m, cm, ', \"):";
+            this.re = Pattern.compile("m|cm|'|\"");
+        }
         
-        public ConvertState(States states) { this.states = states; }
-        
-        @Override public void next() {
-            Matcher mtc = re.matcher(states.scanner.next());
-
-            System.out.println("Please enter unuits to convert to (m, cm, ', \"):");
-            states.backtrack = this;
-            
-            if (mtc.matches()) {
-                try {
-                    Class cls = states.handlers.get(mtc.group());
-                    Unit u = (Unit)(cls.getDeclaredConstructor(cls).newInstance(states.unit));
-                    System.out.println("After conversion: " + u);
-                    states.current = states.input;
-                } catch (InstantiationException |
-                         IllegalAccessException |
-                         NoSuchMethodException  |
-                         InvocationTargetException exp) {
-                    logger.debug("Instantiation failed: " + mtc.group() +
-                                 "(This shouldn't happen.)");
-                }
-            } else {
-                states.current = states.error;
-            }
+        @Override public void tryNext() {
+            Unit before = states.unit;
+            readUnit(mtc.group(), states.input);
+            states.unit.init(before);
+            System.out.println("After conversion: " + states.unit);
         }
     }
 
@@ -204,10 +199,10 @@ class Assignment11 extends Assignment {
     
     @Override public void interact(App app) {
         logger.debug("interacting");
-        System.out.println("Welcome to unit conversion program!");
         States states = new States();
+        System.out.println("Welcome to unit conversion program!");
         states.input = new InputState(states);
-        states.conversion = new InputState(states);
+        states.conversion = new ConvertState(states);
         states.error = new ErrorState(states, app);
         states.current = states.input;
         
