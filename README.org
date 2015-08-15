@@ -52,6 +52,12 @@
   #+end_src
   where =N= is the assignment number, to load N'th assignment.
 
+* Logging
+  The project uses =logback= adapter to =log4j=.  The configuration file is
+  here: [[./etc/log4j.properties]].  In order to affect the amount of information
+  printed adjust the value of =log4j.rootLogger= property (possible values are
+  =DEBUG=, =INFO=, =WARN= and =ERROR=.
+
 * Bonus Reading Material
   You can integrate Maven POM files into many popular code editors such
   as Intellij IDEA, Eclipse or Netbeans.
