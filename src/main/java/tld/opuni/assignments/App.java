@@ -53,7 +53,7 @@ class App {
                                     "Send your complaints to <olegsivokon@gmail.com>", true);
             } else {
                 app = new App();
-                app.loadAssignment(line.getOptionValue("assignment", "0"));
+                app.loadAssignment(line.getOptionValue("assignment", "11"));
             }
         } catch (ParseException exp) {
             logger.error("Parsing failed.  Reason: " + exp.getMessage());
@@ -69,7 +69,7 @@ class App {
         } catch (InstantiationException |
                  IllegalAccessException |
                  ArrayIndexOutOfBoundsException exp) {
-            logger.error("This assignment haven't been written yet: " +
+            logger.error("This assignment hasn't been written yet: " +
                          (subscript + 11));
         }
     }
