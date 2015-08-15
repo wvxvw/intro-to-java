@@ -51,3 +51,10 @@
     java -jar ./target/assignments-1.0-SNAPSHOT.jar -a N
   #+end_src
   where =N= is the assignment number, to load N'th assignment.
+
+* Bonus Reading Material
+  You can integrate Maven POM files into many popular code editors such
+  as Intellij IDEA, Eclipse or Netbeans.
+  - Netbeans :: https://platform.netbeans.org/tutorials/nbm-maven-quickstart.html
+  - Eclipse :: http://books.sonatype.com/m2eclipse-book/reference/creating-sect-importing-projects.html
+  - Intellij IDEA :: https://www.jetbrains.com/idea/help/maven-2.html
