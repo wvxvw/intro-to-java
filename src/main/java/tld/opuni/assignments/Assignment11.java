@@ -21,28 +21,15 @@ class Assignment11 extends Assignment {
 
         public double value;
 
-        protected double[] coefficients = { 1d, 100d, 2.54d, 12d * 2.54d };
-
-        /**
-         * As is often the case with retarded languages written by convicted retards,
-         * one has to redo the basic features of the language from scratch [sic].
-         */
-        protected Class[] dispatchers = {
-            Centimeter.class,
-            Meter.class,
-            Inch.class,
-            Foot.class
-        };
-
         public void init(double unit) { value = unit; }
         
         public void init(Unit unit) {
-            double cm = unit.value * coefficients[
-                ArrayUtils.indexOf(dispatchers, unit.getClass())];
-            value = cm / coefficients[ArrayUtils.indexOf(dispatchers, getClass())];
+            value = (unit.value * unit.getCoefficient()) / getCoefficient();
         }
 
         protected abstract String getUnits();
+
+        protected abstract double getCoefficient();
         
         protected double getThreshold() { return 100; }
         
@@ -57,21 +44,29 @@ class Assignment11 extends Assignment {
 
     private class Centimeter extends Unit {
 
+        @Override protected double getCoefficient() { return 1d; }
+        
         @Override protected String getUnits() { return "cm"; }
     }
 
     private class Meter extends Unit {
 
+        @Override protected double getCoefficient() { return 100d; }
+        
         @Override protected String getUnits() { return "m"; }
     }
 
     private class Inch extends Unit {
 
+        @Override protected double getCoefficient() { return 2.54d; }
+        
         @Override protected String getUnits() { return "\""; }
     }
 
     private class Foot extends Unit {
 
+        @Override protected double getCoefficient() { return 12d * 2.54d; }
+        
         @Override protected String getUnits() { return "'"; }
     }
 
