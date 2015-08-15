@@ -1,0 +1,53 @@
+* Installation
+
+** Dependencies
+  This project uses Maven to fetch its dependencies.
+  Maven is usually provided by Linux systems.  Use your package
+  manager to install it.  For example, on Debina-like systems
+  you would run:
+
+  #+begin_src sh
+    sudo apt-get install mvn
+  #+end_src
+
+  On RHEL-like systems you would run:
+
+  #+begin_src sh
+    sudo dnf install mvn
+  #+end_src
+
+  Installation instructions for MS Windows and Apple OS can be found
+  here:
+  - MS Windows :: http://www.mkyong.com/maven/how-to-install-maven-in-windows/
+  - Apple OS X :: http://stackoverflow.com/questions/8826881/maven-install-on-mac-os-x
+
+** Sources
+   Run:
+   #+begin_src sh
+     git clone https://github.com/wvxvw/intro-to-java.git
+   #+end_src
+
+   Or download the project sources from
+   https://github.com/wvxvw/intro-to-java/archive/master.zip
+
+* Building
+  Run:
+  #+begin_src sh
+    mvn package
+  #+end_src
+  to generate an executable JAR file.  The file will be generated in
+  [[./target/assignments-1.0-SNAPSHOT.jar]].  Be patient while Maven resolves
+  its dependencies.  Repeated builds will take significantly less time.
+
+* Using
+  Run:
+  #+begin_src sh
+    java -jar ./target/assignments-1.0-SNAPSHOT.jar --help
+  #+end_src
+  to read the available options.
+
+  Run: 
+  #+begin_src sh
+    java -jar ./target/assignments-1.0-SNAPSHOT.jar -a N
+  #+end_src
+  where =N= is the assignment number, to load N'th assignment.
