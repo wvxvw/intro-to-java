@@ -70,7 +70,11 @@ class Assignment11 extends Assignment {
 
     private abstract class State {
 
-        public States states;
+        public final States states;
+
+        public State(final States states) {
+            this.states = states;
+        }
         
         public abstract void next();
     }
@@ -84,7 +88,7 @@ class Assignment11 extends Assignment {
         public ReadState(final States states,
                          final String prompt,
                          final String pattern) {
-            this.states = states;
+            super(states);
             this.prompt = prompt;
             this.re = Pattern.compile(pattern);
         }
@@ -102,8 +106,8 @@ class Assignment11 extends Assignment {
 
         protected void readUnit(final String str, final State change) {
             try {
-                Class cls = states.handlers.get(str);
-                Constructor ctr = cls.getDeclaredConstructors()[0];
+                final Class cls = states.handlers.get(str);
+                final Constructor ctr = cls.getDeclaredConstructors()[0];
                 ctr.setAccessible(true);
                 logger.debug("cls: " + ctr);
                 states.unit = (Unit)(ctr.newInstance(Assignment11.this));
@@ -145,7 +149,7 @@ class Assignment11 extends Assignment {
         }
         
         @Override public void tryNext() {
-            Unit before = states.unit;
+            final Unit before = states.unit;
             readUnit(mtc.group(), states.input);
             states.unit.init(before);
             System.out.println("After conversion: " + states.unit);
@@ -154,10 +158,10 @@ class Assignment11 extends Assignment {
 
     private class ErrorState extends State {
 
-        private App app;
+        private final App app;
         
         public ErrorState(final States states, final App app) {
-            this.states = states;
+            super(states);
             this.app = app;
         }
         
@@ -198,7 +202,7 @@ class Assignment11 extends Assignment {
     
     @Override public void interact(final App app) {
         logger.debug("interacting");
-        States states = new States();
+        final States states = new States();
         System.out.println("Welcome to unit conversion program!");
         states.input = new InputState(states);
         states.conversion = new ConvertState(states);

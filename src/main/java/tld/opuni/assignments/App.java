@@ -20,23 +20,23 @@ class App {
 
     private static final Logger logger = LoggerFactory.getLogger(App.class);
     
-    private static Class[] assignments = {
+    private static final Class[] assignments = {
         Assignment11.class
     };
 
-    private static App app;
+    private static final App app = new App();
     
     public static void main(String ...args) {
         PropertyConfigurator.configure("./etc/log4j.properties");
-        CommandLineParser parser = new GnuParser();
-        Options options = new Options();
-        Option assignment = Option.builder("a")
+        final CommandLineParser parser = new GnuParser();
+        final Options options = new Options();
+        final Option assignment = Option.builder("a")
             .required(false)
             .hasArg()
             .longOpt("assignment")
             .desc("Select assignment to run")
             .build();
-        Option help = Option.builder("h")
+        final Option help = Option.builder("h")
             .required(false)
             .longOpt("help")
             .desc("Print this message")
@@ -44,15 +44,14 @@ class App {
         options.addOption(assignment);
         options.addOption(help);
         try {
-            CommandLine line = parser.parse(options, args);
+            final CommandLine line = parser.parse(options, args);
             if (line.hasOption("help")) {
-                HelpFormatter formatter = new HelpFormatter();
+                final HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("java -jar ./target/assignments-1.0-SNAPSHOT.jar",
                                     "Introduction to Java (20478). Oleg Sivokon. 2015.",
                                     options,
                                     "Send your complaints to <olegsivokon@gmail.com>", true);
             } else {
-                app = new App();
                 app.loadAssignment(line.getOptionValue("assignment", "11"));
             }
         } catch (ParseException exp) {
@@ -61,10 +60,10 @@ class App {
     }
 
     public void loadAssignment(String which) {
-        int subscript = Integer.parseInt(which) - 11;
+        final int subscript = Integer.parseInt(which) - 11;
         logger.debug("Selected assignment: " + subscript);
         try {
-            Assignment selected = (Assignment)(assignments[subscript].newInstance());
+            final Assignment selected = (Assignment)(assignments[subscript].newInstance());
             selected.interact(this);
         } catch (InstantiationException |
                  IllegalAccessException |
@@ -79,8 +78,8 @@ class App {
         System.out.println("  Type `c' to continue.");
         System.out.println("  Type `q' to quit.");
         System.out.println("  Type the number of an assignment to switch to.");
-        Scanner scanner = new Scanner(System.in);
-        String in = scanner.next();
+        final Scanner scanner = new Scanner(System.in);
+        final String in = scanner.next();
         if ("c".equals(in)) { return; }
         else if ("q".equals(in)) { System.exit(-1); }
         else {
