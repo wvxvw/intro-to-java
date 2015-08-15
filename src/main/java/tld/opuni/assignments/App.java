@@ -1,6 +1,7 @@
 package tld.opuni.assignments;
 
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -17,11 +18,13 @@ import org.apache.log4j.PropertyConfigurator;
 
 class App {
 
-    static final Logger logger = LoggerFactory.getLogger(App.class);
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
     
     private static Class[] assignments = {
         Assignment11.class
     };
+
+    private static App app;
     
     public static void main(String ...args) {
         PropertyConfigurator.configure("./etc/log4j.properties");
@@ -49,17 +52,40 @@ class App {
                                     options,
                                     "Send your complaints to <olegsivokon@gmail.com>", true);
             } else {
-                int subscript = Integer.parseInt(line.getOptionValue("assignment", "0"));
-                logger.debug("Selected assignment: " + subscript);
-                try {
-                    Assignment selected = (Assignment)(assignments[subscript].newInstance());
-                    selected.interact();
-                } catch (InstantiationException | IllegalAccessException exp) {
-                    logger.error("This assignment haven't been written yet: " + subscript);
-                }
+                app = new App();
+                app.loadAssignment(line.getOptionValue("assignment", "0"));
             }
         } catch (ParseException exp) {
             logger.error("Parsing failed.  Reason: " + exp.getMessage());
+        }
+    }
+
+    public void loadAssignment(String which) {
+        int subscript = Integer.parseInt(which) - 11;
+        logger.debug("Selected assignment: " + subscript);
+        try {
+            Assignment selected = (Assignment)(assignments[subscript].newInstance());
+            selected.interact(this);
+        } catch (InstantiationException |
+                 IllegalAccessException |
+                 ArrayIndexOutOfBoundsException exp) {
+            logger.error("This assignment haven't been written yet: " +
+                         (subscript + 11));
+        }
+    }
+
+    public void quitOrReload() {
+        System.out.println("The program is waiting for you instructions:");
+        System.out.println("  Type `c' to continue.");
+        System.out.println("  Type `q' to quit.");
+        System.out.println("  Type the number of an assignment to switch to.");
+        Scanner scanner = new Scanner(System.in);
+        String in = scanner.next();
+        if ("c".equals(in)) { return; }
+        else if ("q".equals(in)) { System.exit(-1); }
+        else {
+            try { loadAssignment(in); }
+            catch (NumberFormatException exp) { quitOrReload(); }
         }
     }
 }
