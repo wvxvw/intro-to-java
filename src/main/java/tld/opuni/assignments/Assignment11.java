@@ -11,8 +11,6 @@ import java.lang.reflect.Constructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 class Assignment11 extends Assignment {
 
     private static final Logger logger = LoggerFactory.getLogger(Assignment11.class);
@@ -31,10 +29,10 @@ class Assignment11 extends Assignment {
 
         protected abstract double getCoefficient();
         
-        protected double getThreshold() { return 100; }
+        protected double getThreshold() { return 100d; }
         
         protected double round(double value) {
-            return Math.round(value * getThreshold()) / (getThreshold() * 10);
+            return Math.round(value * getThreshold()) / (getThreshold() * 10d);
         }
 
         public String toString() {
