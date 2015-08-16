@@ -56,7 +56,8 @@
   The project uses =logback= adapter to =log4j=.  The configuration file is
   here: [[./etc/log4j.properties]].  In order to affect the amount of information
   printed adjust the value of =log4j.rootLogger= property (possible values are
-  =DEBUG=, =INFO=, =WARN= and =ERROR=.
+  =ALL=, =DEBUG=, =INFO=, =WARN= and =ERROR=.  It is also possible to set
+  verbosity level using =--verbosity= command-line option using the same values.
 
 * Bonus Reading Material
   You can integrate Maven POM files into many popular code editors such

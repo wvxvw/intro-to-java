@@ -1,6 +1,5 @@
 package tld.opuni.assignments;
 
-import java.util.Locale;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
