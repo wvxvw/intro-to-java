@@ -83,7 +83,7 @@ public class Assignment12a extends Assignment {
             cld.set(january.getYear(), 0, day.getKey());
             String wday = cld.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US);
             int date = day.getKey();
-            System.out.format("How did you work on %s %d?%n", wday, date + 1);
+            System.out.format("How much did you work on %s %d?%n", wday, date + 1);
             try {
                 double hours = scanner.nextDouble();
             } catch (InputMismatchException e) {
