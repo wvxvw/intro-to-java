@@ -43,6 +43,7 @@ public class App {
         assignments = new HashMap<String, Class>();
         assignments.put("11a", Assignment11a.class);
         assignments.put("11b", Assignment11b.class);
+        assignments.put("12a", Assignment12a.class);
     }
     
     /**
