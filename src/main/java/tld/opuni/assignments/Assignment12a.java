@@ -13,13 +13,28 @@ import java.util.InputMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Blue collar job simulator.  You work overtime making nuts and
+ * bolts.  Earn money as you clock more hours.  <i>Note that your days
+ * may have as many as (2-2<sup>-52</sup>)·2<sup>1023</sup> hours,
+ * <b>what a racket!</b></i>
+ *
+ * @author Oleg Sivokon
+ */
 public class Assignment12a extends Assignment {
 
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment12a.class);
 
     private class Pair extends AbstractMap.SimpleEntry<Integer,Double> {
-        
+
+        /**
+         * Because Java has no deftype.
+         *
+         * @param day The day of the month (which is also the key).
+         *
+         * @param hours The number of hours you have worked that day.
+         */
         Pair(int day, double hours) { super(day, hours); }
     }
     
@@ -35,18 +50,44 @@ public class Assignment12a extends Assignment {
 
         private final int hourlyRate = 35;
 
+        /**
+         * Default constructor, creates new <code>January</code> of the
+         * current year Anno Domini!
+         */
         public January() {
             this(Calendar.getInstance().get(Calendar.YEAR), 2.0d, 8);
         }
-        
-        public January(final int year) {
-            this(year, 2.0d, 8);
-        }
 
+        /**
+         * Creates new <code>January</code> of the year of your choosing.
+         *
+         * @param year The year of yhour choosing.
+         */
+        public January(final int year) { this(year, 2.0d, 8); }
+
+        /**
+         * Creates a special <code>January</code>: you choose the year and
+         * the ratio of hours you are paid when you stay overtime.
+         *
+         * @param year Four digits year in Gregorian calendar.
+         *
+         * @param overtime The ratio of hours counted per hour you stay overtime.
+         */
         public January(final int year, final double overtime) {
             this(year, overtime, 8);
         }
 
+        /**
+         * Creates a very special <code>January</code>: you control the year,
+         * the ratio of overtime hours and the length of the working day (i.e.
+         * when you start working overtime).
+         *
+         * @param year Year of our Lord the Savior, heathens!
+         *
+         * @param overtime How many hours you clock when you work overtime each hour.
+         *
+         * @param workday Unions mandated working day.
+         */
         public January(final int year, final double overtime, final int workday) {
             this.year = year;
             this.overtime = overtime;
@@ -54,16 +95,30 @@ public class Assignment12a extends Assignment {
             this.workdays = calculateWorkdays();
         }
 
-        public Iterator<Pair> iterator() {
-            return workdays.iterator();
-        }
+        /**
+         * Implementation of <code>Iterable</code>.
+         */
+        public Iterator<Pair> iterator() { return workdays.iterator(); }
 
+        /**
+         * The year this January is of.
+         */
         public int getYear() { return year; }
 
+        /**
+         * Union mandated working day (in hours).
+         */
         public int getWorkday() { return workday; }
 
+        /**
+         * The ratio of hours you clock when you work overtime to your
+         * regular Union-mandated hours.
+         */
         public double getOvertime() { return overtime; }
 
+        /**
+         * The day the Earth stood still, but you busted your nut all the same!
+         */
         public Pair max() {
             Pair result = new Pair(-1, Double.MIN_VALUE);
             for (Pair day : this)
@@ -71,22 +126,34 @@ public class Assignment12a extends Assignment {
             return result;
         }
 
+        /**
+         * Of them Union-mandated working day, you only worked this many.
+         */
         public int daysWorked() {
             int result = 0;
             for (Pair day : this) if (day.getValue() > 0) result += 1;
             return result;
         }
 
+        /**
+         * Slacker or worker bee--one way to find out!
+         */
         public double hoursWorked() {
             double result = 0;
             for (Pair day : this) result += hoursPerDay(day);
             return result;
         }
 
+        /**
+         * This is how much you put on your plate, daily.
+         */
         public double computePay(final Pair day) {
             return hoursPerDay(day) * hourlyRate;
         }
 
+        /**
+         * End of the month, here you come!
+         */
         public double paycheck() {
             double result = 0d;
             for (Pair day : this)
@@ -114,7 +181,10 @@ public class Assignment12a extends Assignment {
             return result;
         }
     }
-    
+
+    /**
+     * @see tld.opuni.assignments.Assignment#interact(App) interact
+     */
     @Override public void interact(final App app) {
         System.out.format("Welcome to nuts and bolts accounting program!%n" +
                           "This program will ask you to produce nuts and bolts%n" +
