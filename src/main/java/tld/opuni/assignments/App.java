@@ -33,7 +33,8 @@ class App {
     private App() {
         re = Pattern.compile("(\\d+)\\W*(\\w+)");
         assignments = new HashMap<String, Class>();
-        assignments.put("11a", Assignment11.class);
+        assignments.put("11a", Assignment11a.class);
+        assignments.put("11b", Assignment11b.class);
     }
     
     public static void main(String ...args) {

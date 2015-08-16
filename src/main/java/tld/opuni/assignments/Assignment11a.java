@@ -10,9 +10,9 @@ import java.lang.reflect.Constructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Assignment11 extends Assignment {
+class Assignment11a extends Assignment {
 
-    private static final Logger logger = LoggerFactory.getLogger(Assignment11.class);
+    private static final Logger logger = LoggerFactory.getLogger(Assignment11a.class);
     
     private abstract class Unit {
 
@@ -109,7 +109,7 @@ class Assignment11 extends Assignment {
                 final Constructor ctr = cls.getDeclaredConstructors()[0];
                 ctr.setAccessible(true);
                 logger.debug("cls: " + ctr);
-                states.unit = (Unit)(ctr.newInstance(Assignment11.this));
+                states.unit = (Unit)(ctr.newInstance(Assignment11a.this));
                 states.current = change;
                 logger.debug("state switched: " + states.current);
             } catch (InstantiationException    |
