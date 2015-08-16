@@ -44,6 +44,7 @@ public class App {
         assignments.put("11a", Assignment11a.class);
         assignments.put("11b", Assignment11b.class);
         assignments.put("12a", Assignment12a.class);
+        assignments.put("12b", Assignment12b.class);
     }
     
     /**
@@ -132,19 +133,20 @@ public class App {
      * prompt the user to either continue with the program, to quit or to choose
      * a different assignment.
      */
-    public void quitOrReload() {
+    public boolean quitOrReload() {
         System.out.println("The program is waiting for you instructions:");
         System.out.println("  Type `c' to continue.");
         System.out.println("  Type `q' to quit.");
         System.out.println("  Type the number of an assignment to switch to.");
         final Scanner scanner = new Scanner(System.in);
         final String in = scanner.next();
-        if ("c".equals(in)) return;
+        if ("c".equals(in)) return true;
         else if ("q".equals(in)) System.exit(-1);
         else {
             try { loadAssignment(in); }
             catch (InvalidAssignment exp) { quitOrReload(); }
         }
+        return false;
     }
 
     private class InvalidAssignment extends Exception { }

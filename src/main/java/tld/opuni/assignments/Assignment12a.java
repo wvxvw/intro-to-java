@@ -220,6 +220,7 @@ public class Assignment12a extends Assignment {
                                              Calendar.SHORT, Locale.US),
                           max.getKey() + 1, january.computePay(max),
                           january.daysWorked(), january.hoursWorked(), january.paycheck());
+        if (app.quitOrReload()) interact(app);
     }
 
     private January readJanuary(final Scanner scanner) {
