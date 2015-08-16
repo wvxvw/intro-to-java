@@ -20,7 +20,10 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Level;
 
-class App {
+/**
+ * Entry point.
+ */
+public class App {
 
     private static final Logger logger = LoggerFactory.getLogger(App.class);
     

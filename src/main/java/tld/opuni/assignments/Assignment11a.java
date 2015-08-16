@@ -10,7 +10,7 @@ import java.lang.reflect.Constructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Assignment11a extends Assignment {
+public class Assignment11a extends Assignment {
 
     private static final Logger logger = LoggerFactory.getLogger(Assignment11a.class);
     

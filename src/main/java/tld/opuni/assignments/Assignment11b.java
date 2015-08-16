@@ -3,7 +3,7 @@ package tld.opuni.assignments;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-class Assignment11b extends Assignment {
+public class Assignment11b extends Assignment {
 
     @Override public void interact(final App app) {
         System.out.println("Welcome to paper cup folding program!");
