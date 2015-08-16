@@ -3,8 +3,17 @@ package tld.opuni.assignments;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
+/**
+ * This assignment calculates the profits and the time you
+ * spend when folding paper cups.
+ *
+ * @author Oleg Sivokon
+ */
 public class Assignment11b extends Assignment {
 
+    /**
+     * @see tld.opuni.assignments.Assignment#interact(App) interact
+     */
     @Override public void interact(final App app) {
         System.out.println("Welcome to paper cup folding program!");
         Scanner scanner = new Scanner(System.in);

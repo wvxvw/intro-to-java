@@ -22,6 +22,11 @@ import org.apache.log4j.Level;
 
 /**
  * Entry point.
+ *
+ * This class serves as a command-line interface and a loader for all
+ * assignments written so far.
+ *
+ * @author Oleg Sivokon
  */
 public class App {
 
@@ -40,6 +45,11 @@ public class App {
         assignments.put("11b", Assignment11b.class);
     }
     
+    /**
+     * This function is called by Java runtime when this program stats.
+     *
+     * @param args An array of strings passed as arguments to the program.
+     */
     public static void main(String ...args) {
         PropertyConfigurator.configure("./etc/log4j.properties");
         final CommandLineParser parser = new GnuParser();
@@ -89,6 +99,17 @@ public class App {
         }
     }
 
+    /**
+     * Loads an assignment designated by <code>which</code> argument.
+     *
+     * @param which A string designating assignment.  It should start with a
+     *              digit, which will be interpreted as an assignment number.
+     *              In case the number is less than 11, then assignments are
+     *              assumed to be numbered from zero, otherwise the numbering
+     *              follows the one found in the course silibus.
+     *
+     * @throws InvalidAssignment
+     */
     public void loadAssignment(final String which) throws InvalidAssignment {
         logger.debug("Selected assignment: " + which);
         try {
@@ -105,6 +126,11 @@ public class App {
         }
     }
 
+    /**
+     * Utility function used by assignments to handle exceptional input.  Will
+     * prompt the user to either continue with the program, to quit or to choose
+     * a different assignment.
+     */
     public void quitOrReload() {
         System.out.println("The program is waiting for you instructions:");
         System.out.println("  Type `c' to continue.");

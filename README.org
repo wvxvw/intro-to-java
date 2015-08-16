@@ -59,6 +59,10 @@
   =ALL=, =DEBUG=, =INFO=, =WARN= and =ERROR=.  It is also possible to set
   verbosity level using =--verbosity= command-line option using the same values.
 
+* Documentation
+  Documentation is generated when packaging, i.e. running =mvn package=.  The
+  HTML version of documentation can be found in [[./target/site/apidocs/index.html]].
+
 * Bonus Reading Material
   You can integrate Maven POM files into many popular code editors such
   as Intellij IDEA, Eclipse or Netbeans.
