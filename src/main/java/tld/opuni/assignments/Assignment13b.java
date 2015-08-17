@@ -1,10 +1,7 @@
 package tld.opuni.assignments;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.LinkedList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,30 +17,6 @@ public class Assignment13b extends Assignment {
 
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment13b.class);
-    
-    private class MatrixReader {
-        
-        private final int[][] matrix;
-
-        /**
-         * Reads the given file and parses it into an integer matrix.
-         *
-         * @param file The path to the text file containing the matrix.
-         */
-        public MatrixReader(final String file) throws FileNotFoundException {
-            final Scanner scanner = new Scanner(new File(file));
-            final LinkedList<String> lines = new LinkedList<String>();
-            
-            while (scanner.hasNextLine()) lines.add(scanner.nextLine());
-
-            matrix = lines.stream()
-                     .map(s -> Arrays.stream(s.split("\\W"))
-                          .mapToInt(Integer::parseInt).toArray())
-                     .toArray(int[][]::new);
-        }
-
-        public int[][] getMatrix() { return matrix; }
-    }
 
     /**
      * There is no reason for this function to be either public or static,
@@ -87,10 +60,10 @@ public class Assignment13b extends Assignment {
                 isUpperOddsLowerEvens(new MatrixReader(file).getMatrix()) ?
                 "This matrix satisfies the requirements." :
                 "This matrix does not satisfy the requirements.");
-        }
-        catch (FileNotFoundException exp) {
+        } catch (FileNotFoundException exp) {
             System.out.format("Apparently, such file doesn't exist%n" +
                               "or its format doesn't match.");
+        } finally {
             if (app.quitOrReload()) interact(app);
         }
     }
