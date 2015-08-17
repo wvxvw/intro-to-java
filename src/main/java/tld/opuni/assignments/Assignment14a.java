@@ -62,6 +62,7 @@ public class Assignment14a extends Assignment {
                           "(Matrix can only contain zeros and ones)%n");
         final Scanner scanner = new Scanner(System.in);
         final String file = scanner.nextLine();
+
         try {
             final int hole = holeIndex(new MatrixReader(file).getMatrix());
             System.out.println(
