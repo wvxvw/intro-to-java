@@ -50,6 +50,7 @@ public class App {
         assignments.put("14a", Assignment14a.class);
         assignments.put("14b", Assignment14b.class);
         assignments.put("15a", Assignment15a.class);
+        assignments.put("15b", Assignment15b.class);
     }
     
     /**
