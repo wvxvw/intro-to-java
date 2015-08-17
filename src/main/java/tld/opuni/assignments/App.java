@@ -38,7 +38,7 @@ public class App {
     
     private final Pattern re;
     
-    private App() {
+    protected App() {
         re = Pattern.compile("(\\d+)\\W*(\\w+)");
         assignments = new HashMap<String, Class>();
         assignments.put("11a", Assignment11a.class);
@@ -100,7 +100,7 @@ public class App {
                                     options,
                                     "Send your complaints to <olegsivokon@gmail.com>", true);
             } else {
-                app.loadAssignment(line.getOptionValue("assignment", "11"));
+                app.loadAssignment(line.getOptionValue("assignment", "11a"));
             }
         } catch (ParseException | InvalidAssignment exp) {
             logger.error("Parsing failed.  Reason: " + exp.getMessage());
@@ -155,9 +155,9 @@ public class App {
         return false;
     }
 
-    private class InvalidAssignment extends Exception { }
+    protected class InvalidAssignment extends Exception { }
     
-    private String normalize(final String denorm) throws InvalidAssignment {
+    protected String normalize(final String denorm) throws InvalidAssignment {
         final Matcher mtc = re.matcher(denorm);
         logger.debug("normalizing: " + denorm + " matched: " + mtc.matches());
         if (mtc.matches()) {

@@ -19,7 +19,7 @@ public class Assignment11a extends Assignment {
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment11a.class);
     
-    private abstract class Unit {
+    protected abstract class Unit {
 
         /**
          * The internal value of the unit.  It always has the same units as
@@ -77,28 +77,28 @@ public class Assignment11a extends Assignment {
         }
     }
 
-    private class Centimeter extends Unit {
+    protected class Centimeter extends Unit {
 
         @Override protected double getCoefficient() { return 1d; }
         
         @Override protected String getUnits() { return "cm"; }
     }
 
-    private class Meter extends Unit {
+    protected class Meter extends Unit {
 
         @Override protected double getCoefficient() { return 100d; }
         
         @Override protected String getUnits() { return "m"; }
     }
 
-    private class Inch extends Unit {
+    protected class Inch extends Unit {
 
         @Override protected double getCoefficient() { return 2.54d; }
         
         @Override protected String getUnits() { return "\""; }
     }
 
-    private class Foot extends Unit {
+    protected class Foot extends Unit {
 
         @Override protected double getCoefficient() { return 12d * 2.54d; }
         
