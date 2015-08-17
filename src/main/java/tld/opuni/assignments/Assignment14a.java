@@ -7,6 +7,12 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class looks for a ``hole'' (a row of zeros at the same offset
+ * as a column of all ones, except for the common cell).
+ *
+ * @author Oleg Sivokon
+ */
 public class Assignment14a extends Assignment {
         
     private static final Logger logger =
@@ -64,7 +70,7 @@ public class Assignment14a extends Assignment {
                 "This matrix doesn't have a ``hole''.");
         } catch (FileNotFoundException exp) {
             System.out.format("Apparently, such file doesn't exist%n" +
-                              "or its format doesn't match.");
+                              "or its format doesn't match.%n");
         } finally {
             if (app.quitOrReload()) interact(app);
         }

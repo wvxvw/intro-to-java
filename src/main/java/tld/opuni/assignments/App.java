@@ -48,6 +48,7 @@ public class App {
         assignments.put("13a", Assignment13a.class);
         assignments.put("13b", Assignment13b.class);
         assignments.put("14a", Assignment14a.class);
+        assignments.put("14b", Assignment14b.class);
     }
     
     /**
