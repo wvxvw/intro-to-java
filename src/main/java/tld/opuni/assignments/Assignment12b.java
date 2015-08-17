@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This class prepends a digit to a given number.  The rules
  * for prepending are as follows: if both the first and the
- * last digits are the same, then 9 is appended, otherwise
- * the digit appended is the maximal of the two.
+ * last digits are the same, then 9 is prepended, otherwise
+ * the digit prepended is the maximal of the two.
  *
  * @author Oleg Sivokon
  */
