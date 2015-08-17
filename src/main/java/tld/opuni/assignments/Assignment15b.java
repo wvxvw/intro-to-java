@@ -31,7 +31,8 @@ public class Assignment15b extends Assignment {
         if (pattern.length() != phrase.length() ||
             (pattern.charAt(0) != '?' && pattern.charAt(0) != phrase.charAt(0)))
             return false;
-        return isMatch(pattern.substring(1), phrase.substring(1));
+        return pattern.length() == 1 ||
+                isMatch(pattern.substring(1), phrase.substring(1));
     }
     
     /**
