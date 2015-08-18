@@ -1,6 +1,7 @@
 package tld.opuni.assignments;
 
 import java.util.Calendar;
+import java.io.FileNotFoundException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -238,5 +239,14 @@ public class AppTest extends TestCase {
 
         assignment.longestBookAvailable().borrow("Patron 1");
         assertEquals(1, assignment.borrowed());
+    }
+
+    public void testAssignment12b() {
+        try {
+            assertTrue(Assignment13b.isUpperOddsLowerEvens(
+                new MatrixReader("./etc/matrix-0.txt").getMatrix()));
+            assertFalse(Assignment13b.isUpperOddsLowerEvens(
+                new MatrixReader("./etc/matrix-1.txt").getMatrix()));
+        } catch (FileNotFoundException exp) { fail(); }
     }
 }
