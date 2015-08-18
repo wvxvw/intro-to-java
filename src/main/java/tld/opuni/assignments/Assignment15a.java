@@ -19,11 +19,13 @@ public class Assignment15a extends Assignment {
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment15a.class);
 
-    private static boolean allEven(final int[] row) {
-        return Arrays.stream(row).allMatch(n -> (n & 1) == 0);
+    private static boolean allOdd(final int[] row) {
+        logger.debug("allOdd: " + Arrays.toString(row));
+        return Arrays.stream(row).allMatch(n -> (n & 1) == 1);
     }
 
     private static boolean allMod3(final int[] row) {
+        logger.debug("allMod3: " + Arrays.toString(row));
         return Arrays.stream(row).allMatch(n -> (n % 3) == 0);
     }
 
@@ -37,13 +39,13 @@ public class Assignment15a extends Assignment {
      * no reason to be neither public nor static.
      *
      * This function will return <code>true</code> iff the matrix
-     * passed to it has only even numbers in even rows and perfect
+     * passed to it has only odd numbers in even rows and perfect
      * multiples of three in odd rows.
      */
     public static boolean isEvenRowsEvenOddRowsMod3(final int[][] matrix) {
         if (matrix.length > 0) {
-            if (((matrix.length & 1) == 0) ? 
-                allEven(matrix[0]) : allMod3(matrix[0]))
+            if (((matrix.length & 1) == 1) ? 
+                allOdd(matrix[0]) : allMod3(matrix[0]))
                 return isEvenRowsEvenOddRowsMod3(butFirst(matrix));
             else return false;
         }

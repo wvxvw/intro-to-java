@@ -22,7 +22,7 @@ public class Assignment14b extends Assignment {
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment14b.class);
 
-    private int[] sortMod4(final int[] array) {
+    protected int[] sortMod4(final int[] array) {
         final List<Integer> sorted = Ints.asList(array);
         Collections.sort(sorted, new Comparator<Integer>() {
                 @Override public int compare(Integer a, Integer b) {

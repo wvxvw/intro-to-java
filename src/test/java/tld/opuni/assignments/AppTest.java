@@ -1,6 +1,7 @@
 package tld.opuni.assignments;
 
 import java.util.Calendar;
+import java.util.Arrays;
 import java.io.FileNotFoundException;
 
 import junit.framework.Test;
@@ -148,6 +149,18 @@ public class AppTest extends TestCase {
             return library.longestBookAvailable();
         }
     }
+
+    private static class TestAssignment14a extends Assignment14a {
+        
+        public int holePosition(final int[][] matrix) {
+            return holeIndex(matrix);
+        }
+    }
+    
+    private static class TestAssignment14b extends Assignment14b {
+        
+        public int[] sort(final int[] array) { return sortMod4(array); }
+    }
     
     /**
      * Create the test case
@@ -179,7 +192,7 @@ public class AppTest extends TestCase {
         }
     }
 
-    public void testConversion() {
+    public void testAssignment11a() {
         final TestAssignment11a assignment = new TestAssignment11a();
         
         assertEquals(1d,          assignment.cmToCm(1d), 0.001d);
@@ -200,7 +213,7 @@ public class AppTest extends TestCase {
         assertEquals(1d,          assignment.footToFoot(1d), 0.001d);
     }
 
-    public void testCupFolding() {
+    public void testAssignment11b() {
         final TestAssignment11b assignment = new TestAssignment11b();
         assertEquals("You earned 25.00 shekels in just 50 minutes!\n",
                      assignment.fold(10));
@@ -210,7 +223,7 @@ public class AppTest extends TestCase {
                      assignment.fold(31));
     }
 
-    public void testJanuaryPay() {
+    public void testAssignment12a() {
         final String report =
                 "The longest day of your career so far was: Mon 6\n" +
                 "On that day you earned 560.00 shekels.\n" +
@@ -220,14 +233,14 @@ public class AppTest extends TestCase {
         assertEquals(report, new TestAssignment12a().paycheck(hours));
     }
 
-    public void testCatalogue() {
+    public void testAssignment12b() {
         final TestAssignment12b assignment = new TestAssignment12b();
         assertEquals(3312, assignment.testConvert(312));
         assertEquals(72307, assignment.testConvert(2307));
         assertEquals(930323, assignment.testConvert(30323));
     }
 
-    public void testLibrary() {
+    public void testAssignment13a() {
         final TestAssignment13a assignment = new TestAssignment13a();
         assignment.addBook("Author 1", "Title 1", 10);
         assignment.addBook("Author 2", "Title 2", 5);
@@ -241,12 +254,47 @@ public class AppTest extends TestCase {
         assertEquals(1, assignment.borrowed());
     }
 
-    public void testAssignment12b() {
+    public void testAssignment13b() {
         try {
             assertTrue(Assignment13b.isUpperOddsLowerEvens(
                 new MatrixReader("./etc/matrix-0.txt").getMatrix()));
             assertFalse(Assignment13b.isUpperOddsLowerEvens(
                 new MatrixReader("./etc/matrix-1.txt").getMatrix()));
         } catch (FileNotFoundException exp) { fail(); }
+    }
+
+    public void testAssignment14a() {
+        final TestAssignment14a assignment = new TestAssignment14a();
+        try {
+            assertEquals(3, assignment.holePosition(
+                new MatrixReader("./etc/matrix-2.txt").getMatrix()));
+            assertEquals(-1, assignment.holePosition(
+                new MatrixReader("./etc/matrix-3.txt").getMatrix()));
+        } catch (FileNotFoundException exp) { fail(); }
+    }
+
+    public void testAssignment14b() {
+        final TestAssignment14b assignment = new TestAssignment14b();
+        final int[] unsorted = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        final int[] sorted = { 4, 8, 1, 5, 9, 2, 6, 10, 3, 7 };
+        assertTrue(Arrays.equals(sorted, assignment.sort(unsorted)));
+    }
+    
+    public void testAssignment15a() {
+        PropertyConfigurator.configure("./etc/log4j.properties");
+        try {
+            assertTrue(Assignment15a.isEvenRowsEvenOddRowsMod3(
+                new MatrixReader("./etc/matrix-4.txt").getMatrix()));
+            assertFalse(Assignment15a.isEvenRowsEvenOddRowsMod3(
+                new MatrixReader("./etc/matrix-5.txt").getMatrix()));
+        } catch (FileNotFoundException exp) { fail(); }
+    }
+
+    public void testAssignment15b() {
+        PropertyConfigurator.configure("./etc/log4j.properties");
+        assertTrue(Assignment15b.isMatch("The?xamIs?asy", "TheExamIsEasy"));
+        assertTrue(Assignment15b.isMatch("The??amIs?asy", "TheExamIsEasy"));
+        assertTrue(Assignment15b.isMatch("TheExamIsEasy", "TheExamIsEasy"));
+        assertFalse(Assignment15b.isMatch("The?xamIsHard", "TheExamIsEasy"));
     }
 }

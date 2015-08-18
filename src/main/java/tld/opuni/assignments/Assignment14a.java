@@ -34,15 +34,11 @@ public class Assignment14a extends Assignment {
         return Arrays.stream(matrix[row]).reduce(0, (a, b) -> a + b);
     }
     
-    private int holeIndex(final int[][] matrix) {
+    protected int holeIndex(final int[][] matrix) {
         int result = -1;
         assert matrix.length == matrix[0].length;
-        logger.debug("matrix: " + matrix.length + " by " + matrix[0].length);
+
         for (int row = 0; row < matrix.length; row++) {
-            logger.debug("probable hole at: " + row + " " +
-                         matrix[row][row] + " " + 
-                         sumRow(matrix, row) + " " +
-                         sumCol(matrix, row));
             if (matrix[row][row] == 0 &&
                 sumRow(matrix, row) == 0 &&
                 sumCol(matrix, row) == matrix.length - 1) {

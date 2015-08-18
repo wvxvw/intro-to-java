@@ -36,4 +36,15 @@ public class MatrixReader {
      * The matrix we read from file (does not create a copy).
      */ 
     public int[][] getMatrix() { return matrix; }
+
+    /**
+     * The same matrix as <code>getMatrix()</code>, return transposed (copy).
+     */
+    public int[][] transposed() {
+        final int[][] result = new int[matrix[0].length][matrix.length];
+        for (int row = 0; row < matrix.length; row++)
+            for (int col = 0; col < matrix[0].length; col++)
+                result[col][row] = matrix[row][col];
+        return result;
+    }
 }
