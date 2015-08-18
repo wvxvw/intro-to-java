@@ -26,7 +26,7 @@ public class Assignment12a extends Assignment {
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment12a.class);
 
-    private class Pair extends AbstractMap.SimpleEntry<Integer,Double> {
+    protected class Pair extends AbstractMap.SimpleEntry<Integer,Double> {
 
         /**
          * Because Java has no deftype.
@@ -38,7 +38,7 @@ public class Assignment12a extends Assignment {
         Pair(int day, double hours) { super(day, hours); }
     }
     
-    private class January implements Iterable<Pair> {
+    protected class January implements Iterable<Pair> {
         
         private final LinkedList<Pair> workdays;
 
@@ -210,17 +210,22 @@ public class Assignment12a extends Assignment {
                 break;
             }
         }
+        System.out.print(formatReport(january, cld));
+        if (app.quitOrReload()) interact(app);
+    }
+
+    protected String formatReport(final January january, final Calendar cld) {
         final Pair max = january.max();
         cld.set(january.getYear(), 0, max.getKey());
-        System.out.format("The longest day of your career so far was: %s %s%n" +
-                          "On that day you earned %.2f shekels.%n" +
-                          "You have worked for %d days, during which you clocked %.2f hours%n" +
-                          "which earned you %.2f shekels.%n",
-                          cld.getDisplayName(Calendar.DAY_OF_WEEK,
-                                             Calendar.SHORT, Locale.US),
-                          max.getKey() + 1, january.computePay(max),
-                          january.daysWorked(), january.hoursWorked(), january.paycheck());
-        if (app.quitOrReload()) interact(app);
+        return String
+                .format("The longest day of your career so far was: %s %s%n" +
+                        "On that day you earned %.2f shekels.%n" +
+                        "You have worked for %d days, during which you clocked %.2f hours%n" +
+                        "which earned you %.2f shekels.%n",
+                        cld.getDisplayName(Calendar.DAY_OF_WEEK,
+                                           Calendar.SHORT, Locale.US),
+                        max.getKey() + 1, january.computePay(max),
+                        january.daysWorked(), january.hoursWorked(), january.paycheck());
     }
 
     private January readJanuary(final Scanner scanner) {

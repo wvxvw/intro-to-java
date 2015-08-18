@@ -3,6 +3,9 @@ package tld.opuni.assignments;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This assignment calculates the profits and the time you
  * spend when folding paper cups.
@@ -11,24 +14,23 @@ import java.util.InputMismatchException;
  */
 public class Assignment11b extends Assignment {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(Assignment11b.class);
+    
     /**
-     * @see tld.opuni.assignments.Assignment#interact(App) interact
+     * This class folds cups.
      */
-    @Override public void interact(final App app) {
-        System.out.println("Welcome to paper cup folding program!");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("How many cups do you want to fold?");
-            int numCaps;
-            try {
-                numCaps = scanner.nextInt();
-            } catch (InputMismatchException xpt) {
-                app.quitOrReload();
-                scanner = new Scanner(System.in);
-                continue;
-            }
-            double shekels = numCaps * 2.5;
-            int time = numCaps * 5;
+    protected class CupsFolder {
+
+        /**
+         * Produces a message describing the earnings for the number
+         * of cups folded.
+         *
+         * @param cups The number of cups folded.
+         */
+        public String fold(final int cups) {
+            double shekels = cups * 2.5;
+            int time = cups * 5;
             int hours = time / 60;
             int minutes = time % 60;
             String hMessage;
@@ -47,8 +49,28 @@ public class Assignment11b extends Assignment {
             if (mMessage.length() > 0 && hMessage.length() > 0)
                 connector = " and ";
             else connector = "";
-            System.out.format("You earned %.2f shekels in just %s%s%s!%n",
-                              shekels, hMessage, connector, mMessage);
+            return String.format("You earned %.2f shekels in just %s%s%s!%n",
+                                 shekels, hMessage, connector, mMessage);
+        }
+    }
+    
+    /**
+     * @see tld.opuni.assignments.Assignment#interact(App) interact
+     */
+    @Override public void interact(final App app) {
+        System.out.println("Welcome to paper cup folding program!");
+        final Scanner scanner = new Scanner(System.in);
+        final CupsFolder folder = new CupsFolder();
+        
+        while (true) {
+            System.out.println("How many cups do you want to fold?");
+            try {
+                System.out.print(folder.fold(scanner.nextInt()));
+            } catch (InputMismatchException xpt) {
+                scanner.next();
+                app.quitOrReload();
+                continue;
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package tld.opuni.assignments;
 
+import java.util.Calendar;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -94,6 +96,29 @@ public class AppTest extends TestCase {
             return convert(new Foot(), new Foot(), foot);
         }
     }
+
+    private static class TestAssignment11b extends Assignment11b {
+        
+        public String fold(final int cups) {
+            return new CupsFolder().fold(cups);
+        }
+    }
+
+    private static class TestAssignment12a extends Assignment12a {
+        
+        public String paycheck(final double[] hours) {
+            final January january = new January();
+            final Calendar cld = Calendar.getInstance();
+            
+            int date = 0;
+            for (Pair day : january) {
+                if (hours.length <= date) break;
+                day.setValue(hours[date]);
+                date += 1;
+            }
+            return formatReport(january, cld);
+        }
+    }
     
     /**
      * Create the test case
@@ -144,5 +169,25 @@ public class AppTest extends TestCase {
         assertEquals(2.54d * 12d, assignment.footToM(100d), 0.001d);
         assertEquals(12d,         assignment.footToInch(1d), 0.001d);
         assertEquals(1d,          assignment.footToFoot(1d), 0.001d);
+    }
+
+    public void testCupFolding() {
+        final TestAssignment11b assignment = new TestAssignment11b();
+        assertEquals("You earned 25.00 shekels in just 50 minutes!\n",
+                     assignment.fold(10));
+        assertEquals("You earned 32.50 shekels in just 1 hour and 5 minutes!\n",
+                     assignment.fold(13));
+        assertEquals("You earned 77.50 shekels in just 2 hours and 35 minutes!\n",
+                     assignment.fold(31));
+    }
+
+    public void testJanuaryPay() {
+        final String report =
+                "The longest day of your career so far was: Mon 6\n" +
+                "On that day you earned 560.00 shekels.\n" +
+                "You have worked for 5 days, during which you clocked 46.00 hours\n" +
+                "which earned you 1610.00 shekels.\n";
+        final double[] hours = { 9.5d, 5d, 8d, 12d, 6d };
+        assertEquals(new TestAssignment12a().paycheck(hours), report);
     }
 }
