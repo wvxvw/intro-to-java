@@ -105,6 +105,8 @@ public class AppTest extends TestCase {
     }
 
     private static class TestAssignment12a extends Assignment12a {
+
+        TestAssignment12a() { PropertyConfigurator.configure("./etc/log4j.properties"); }
         
         public String paycheck(final double[] hours) {
             final January january = new January();
@@ -124,6 +126,25 @@ public class AppTest extends TestCase {
         
         public int testConvert(final int n) {
             return convert(digitsOf(n));
+        }
+    }
+
+    private static class TestAssignment13a extends Assignment13a {
+        private final Library library = new Library();
+
+        TestAssignment13a() { PropertyConfigurator.configure("./etc/log4j.properties"); }
+
+        public long tally() { return library.tally(); }
+
+        public long borrowed() { return library.borrowed(); }
+
+        public boolean addBook(
+            final String author, final String title, final int numPages) {
+            return library.addBook(author, title, numPages);
+        }
+
+        public Book longestBookAvailable() {
+            return library.longestBookAvailable();
         }
     }
     
@@ -195,7 +216,7 @@ public class AppTest extends TestCase {
                 "You have worked for 5 days, during which you clocked 46.00 hours\n" +
                 "which earned you 1610.00 shekels.\n";
         final double[] hours = { 9.5d, 5d, 8d, 12d, 6d };
-        assertEquals(new TestAssignment12a().paycheck(hours), report);
+        assertEquals(report, new TestAssignment12a().paycheck(hours));
     }
 
     public void testCatalogue() {
@@ -203,5 +224,19 @@ public class AppTest extends TestCase {
         assertEquals(3312, assignment.testConvert(312));
         assertEquals(72307, assignment.testConvert(2307));
         assertEquals(930323, assignment.testConvert(30323));
+    }
+
+    public void testLibrary() {
+        final TestAssignment13a assignment = new TestAssignment13a();
+        assignment.addBook("Author 1", "Title 1", 10);
+        assignment.addBook("Author 2", "Title 2", 5);
+        assignment.addBook("Author 3", "Title 3", 12);
+        
+        assertEquals(3, assignment.tally());
+        assertEquals(0, assignment.borrowed());
+        assertEquals("Title 3", assignment.longestBookAvailable().getTitle());
+
+        assignment.longestBookAvailable().borrow("Patron 1");
+        assertEquals(1, assignment.borrowed());
     }
 }

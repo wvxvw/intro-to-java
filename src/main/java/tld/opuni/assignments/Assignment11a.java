@@ -56,12 +56,12 @@ public class Assignment11a extends Assignment {
         protected abstract double getCoefficient();
 
         /**
-         * The rounding threshold (required by the course silibus).
+         * The rounding threshold (required by the course syllabus).
          */
         protected double getThreshold() { return 100d; }
 
         /**
-         * The rounding procedure (defined in the course silibus).
+         * The rounding procedure (defined in the course syllabus).
          *
          * @param value The value with maximum precision.
          */

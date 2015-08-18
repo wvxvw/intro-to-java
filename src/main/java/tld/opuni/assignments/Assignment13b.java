@@ -21,7 +21,7 @@ public class Assignment13b extends Assignment {
 
     /**
      * There is no reason for this function to be either public or static,
-     * but the silibus requirement was very specific about it.
+     * but the syllabus requirement was very specific about it.
      * This function will look into the upper-right triangle of the matrix for
      * even factors and lower-left triangle for the odd factors.  If none are
      * found, it will return <code>true</code>.

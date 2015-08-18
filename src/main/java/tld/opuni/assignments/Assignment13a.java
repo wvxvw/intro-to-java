@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * the number of pages each book has.
  *
  * <h1>Modifications to Silibus Requirements</h1>
- * <i>I deliberately altered some names and requirements found in the silibus.
+ * <i>I deliberately altered some names and requirements found in the syllabus.
  * Below is the justification for my changes.</i>
  * 
  * <ul>
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  *   as they would earn fame.  For example, the book Compilers: Principles,
  *   Techniques, and Tools by Alfred Aho, Jeffrey Ullman, Monica S. Lam,
  *   and Ravi Sethi has eraned the name "Dragon Book".  However, I believe
- *   the silibus' author was aiming for a more prosaic nomenclature.</li>
+ *   the syllabus' author was aiming for a more prosaic nomenclature.</li>
  *   
  *   <li><code>bookAuthor</code> was renamed to <code>author</code>.
  *   This is because using the name of the class in the name of its
@@ -38,12 +38,12 @@ import org.slf4j.LoggerFactory;
  *   <li><code>friendName</code> is renamed to <code>patron</code>.
  *   Books don't have friends.  The person who borrows a book from a library
  *   is a patron.  Eventually, it may be your or someone else's friend,
- *   but it is not what the author of the silibus most likely had in mind.</li>
+ *   but it is not what the author of the syllabus most likely had in mind.</li>
  *   
  *   <li>I removed all underscores in field names.  Such naming goes against
  *   the established practices in the field.</li>
  *   
- *   <li>Finally, it is not clear what the author of the silibus had in
+ *   <li>Finally, it is not clear what the author of the syllabus had in
  *   mind when she wrote tha the number of books in the library should be
  *   constant.  Some programming languages have a concept of constants,
  *   either variables or class fields etc.  Java has literal constants, i.e.
@@ -59,7 +59,7 @@ public class Assignment13a extends Assignment {
     private static final Logger logger =
             LoggerFactory.getLogger(Assignment13a.class);
 
-    private class Book {
+    protected class Book {
         
         private String title;
         
@@ -67,7 +67,7 @@ public class Assignment13a extends Assignment {
         
         private int numPages;
         
-        private String patron;
+        private String patron = null;
 
         public String getTitle() { return title; }
 
@@ -75,7 +75,7 @@ public class Assignment13a extends Assignment {
 
         public int getNumPages() { return numPages; }
 
-        public boolean isAvailable() { return patron != null; }
+        public boolean isAvailable() { return patron == null; }
 
         public Book(final String author, final String title, final int numPages) {
             this.author = author;
@@ -99,14 +99,17 @@ public class Assignment13a extends Assignment {
     private class BookComparator implements Comparator<Book> {
 
         @Override public int compare(final Book x, final Book y) {
-            if (!y.isAvailable() && x.isAvailable()) return 0;
-            if (!x.isAvailable()) return 1;
-            if (!y.isAvailable()) return -1;
-            return Integer.compare(x.getNumPages(), y.getNumPages());
+            int result;
+            
+            if (!(y.isAvailable() && x.isAvailable())) result = 0;
+            else if (!x.isAvailable()) result = 1;
+            else if (!y.isAvailable()) result = -1;
+            else result = Integer.compare(x.getNumPages(), y.getNumPages());
+            return result;
         }
     }
     
-    private class Library {
+    protected class Library {
 
         private final Book[] store;
 
@@ -117,7 +120,7 @@ public class Assignment13a extends Assignment {
         public long tally() { return present().count(); }
 
         public long borrowed() {
-            return present().filter(b -> b.isAvailable()).count();
+            return present().filter(b -> !b.isAvailable()).count();
         }
 
         public boolean addBook(
@@ -149,5 +152,8 @@ public class Assignment13a extends Assignment {
         Book sicp = new Book("Structure and Interpretation of Computer Programs",
                              "Gerald Jay Sussman and Hal Abelson", 855);
         System.out.println("Example book: " + sicp);
+        final Library library = new Library();
+        library.addBook(sicp.getTitle(), sicp.getAuthor(), sicp.getNumPages());
+        app.quitOrReload();
     }
 }

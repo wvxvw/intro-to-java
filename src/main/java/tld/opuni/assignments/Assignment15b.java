@@ -20,7 +20,7 @@ public class Assignment15b extends Assignment {
 
     /**
      * This function's bizarre access modifiers are due to explicit requirement
-     * found in the course silibus.  This function needs not be neither static
+     * found in the course syllabus.  This function needs not be neither static
      * nor pblic.
      *
      * This function will return <code>true</code> iff all characters sans

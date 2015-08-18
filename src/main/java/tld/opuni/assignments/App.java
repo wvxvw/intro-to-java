@@ -68,7 +68,7 @@ public class App {
             .longOpt("assignment")
             .desc("Select assignment to run.  " +
                   "The assignment number is composed of a sequence of digits " +
-                  "as they appear in the course silibus followed by a letter or " +
+                  "as they appear in the course syllabus followed by a letter or " +
                   "a digit, with a possible space " +
                   "or other punctuation character in between.  " +
                   "For example `11a', `11.0', `1-A' are all valid and designate " +
@@ -114,7 +114,7 @@ public class App {
      *              digit, which will be interpreted as an assignment number.
      *              In case the number is less than 11, then assignments are
      *              assumed to be numbered from zero, otherwise the numbering
-     *              follows the one found in the course silibus.
+     *              follows the one found in the course syllabus.
      *
      * @throws InvalidAssignment
      */
