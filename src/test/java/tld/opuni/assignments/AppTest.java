@@ -119,6 +119,13 @@ public class AppTest extends TestCase {
             return formatReport(january, cld);
         }
     }
+
+    private static class TestAssignment12b extends Assignment12b {
+        
+        public int testConvert(final int n) {
+            return convert(digitsOf(n));
+        }
+    }
     
     /**
      * Create the test case
@@ -189,5 +196,12 @@ public class AppTest extends TestCase {
                 "which earned you 1610.00 shekels.\n";
         final double[] hours = { 9.5d, 5d, 8d, 12d, 6d };
         assertEquals(new TestAssignment12a().paycheck(hours), report);
+    }
+
+    public void testCatalogue() {
+        final TestAssignment12b assignment = new TestAssignment12b();
+        assertEquals(3312, assignment.testConvert(312));
+        assertEquals(72307, assignment.testConvert(2307));
+        assertEquals(930323, assignment.testConvert(30323));
     }
 }

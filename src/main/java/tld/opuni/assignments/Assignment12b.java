@@ -40,7 +40,7 @@ public class Assignment12b extends Assignment {
         }
     }
 
-    private int[] digitsOf(int number) {
+    protected int[] digitsOf(int number) {
         LinkedList<Integer> result = new LinkedList<Integer>();
         if (number == 0) result.add(0);
         else {
@@ -60,7 +60,7 @@ public class Assignment12b extends Assignment {
         return Arrays.stream(digits).reduce(0, (acc, n) -> acc * 10 + n);
     }
     
-    private int convert(final int[] digits) {
+    protected int convert(final int[] digits) {
         int added;
         final int left = digits[0];
         final int right = digits[digits.length - 1];
